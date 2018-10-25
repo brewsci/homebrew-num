@@ -4,6 +4,13 @@ class BrewsciMetis < Formula
   url "http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/metis-5.1.0.tar.gz"
   sha256 "76faebe03f6c963127dbb73c13eab58c9a3faeae48779f049066a21c087c5db2"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    cellar :any_skip_relocation
+    sha256 "f6cdb521d777b67c283687573de7c6f4771ee3a6cf04a455201dc6801dcb1bce" => :sierra
+    sha256 "e6fac202c1e981a49c93a6b8f0b569eea1f8f86ddafc161acb4959d9e4c27c28" => :x86_64_linux
+  end
+
   keg_only "metis is provided by homebrew/core"
 
   option "with-openmp", "Enable OpenMP multithreading"
