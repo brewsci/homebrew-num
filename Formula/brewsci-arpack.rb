@@ -5,6 +5,12 @@ class BrewsciArpack < Formula
   sha256 "64f3551e5a2f8497399d82af3076b6a33bf1bc95fc46bbcabe66442db366f453"
   head "https://github.com/opencollab/arpack-ng.git"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    sha256 "5e39eb27a3e0f53fcf315f92069a72dd80d42317ef82180453a4a4e1d078ec51" => :sierra
+    sha256 "2c2dc374167e6687dc28c5d16974508c8312e430d5b698c0f963e01efc3756cb" => :x86_64_linux
+  end
+
   keg_only "arpack is provided by homebrew/core"
 
   option "with-mpi", "build with MPI"
