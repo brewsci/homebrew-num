@@ -4,6 +4,13 @@ class BrewsciSuiteSparse < Formula
   url "http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.5.tar.gz"
   sha256 "b9a98de0ddafe7659adffad8a58ca3911c1afa8b509355e7aa58b02feb35d9b6"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    cellar :any
+    sha256 "ae887e80fc0665151c0631e72fb87ec61defb810fb967998efc6dab4c3413c1e" => :sierra
+    sha256 "051402b942484d46f6d12ad3090f9144f03044d777e24db9b09eb455142f7c63" => :x86_64_linux
+  end
+
   keg_only "suite-sparse is provided by homebrew/core"
 
   depends_on "brewsci/num/brewsci-metis"
