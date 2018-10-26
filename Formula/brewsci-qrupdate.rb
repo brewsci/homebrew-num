@@ -4,6 +4,13 @@ class BrewsciQrupdate < Formula
   url "https://downloads.sourceforge.net/qrupdate/qrupdate-1.1.2.tar.gz"
   sha256 "e2a1c711dc8ebc418e21195833814cb2f84b878b90a2774365f0166402308e08"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    cellar :any
+    sha256 "1af31078e954a20e69baf0e3e312eb7a1bb1f8ab426aeb4a2a1b3cb982254bbc" => :sierra
+    sha256 "078de0cdca0ff1bca81692c263f5e48e837335853e1c2e174c7c82e7fa1733f2" => :x86_64_linux
+  end
+
   keg_only "qrupdate is provided by homebrew/core"
 
   depends_on "gcc"
