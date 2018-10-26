@@ -5,6 +5,12 @@ class BrewsciScotchAT5 < Formula
   version "5.1.12b"
   sha256 "82654e63398529cd3bcc8eefdd51d3b3161c0429bb11770e31f8eb0c3790db6e"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    sha256 "9136a0ee5df823790d8dfe1f020b9c52ef456e2e0ba2b2b5a83916d1ed147ebe" => :sierra
+    sha256 "17baf1760d0ffc65f139fa5b5ffcfcb723bc3908985a79df98101c6093f1defb" => :x86_64_linux
+  end
+
   keg_only "conflicts with scotch (6.x)"
 
   depends_on "open-mpi"
