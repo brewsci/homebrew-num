@@ -4,6 +4,13 @@ class BrewsciScotch < Formula
   url "https://gforge.inria.fr/frs/download.php/file/34618/scotch_6.0.4.tar.gz"
   sha256 "f53f4d71a8345ba15e2dd4e102a35fd83915abf50ea73e1bf6efe1bc2b4220c7"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    cellar :any
+    sha256 "92eb12d64de82c8a97eadbaaec7f71c1ed734d808d80a953af336e2a64af78bf" => :sierra
+    sha256 "62e78f72d3cf9e5a2c6b0b8373a1d30b27c2acdb98e705b62499cf714e4500a0" => :x86_64_linux
+  end
+
   keg_only "formulae in brewsci/num are keg only"
 
   option "without-test", "skip build-time tests (not recommended)"
