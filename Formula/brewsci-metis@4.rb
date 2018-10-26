@@ -4,6 +4,13 @@ class BrewsciMetisAT4 < Formula
   url "http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/OLD/metis-4.0.3.tar.gz"
   sha256 "5efa35de80703c1b2c4d0de080fafbcf4e0d363a21149a1ad2f96e0144841a55"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    cellar :any
+    sha256 "99d2bb2459f17fac6bc108dbba71a96e306dc8d4d9954c972bfa9548e4b3bab7" => :sierra
+    sha256 "a4b07714180328ceec706245be033d657fdef2d7abeb35fbc56a76337ff42192" => :x86_64_linux
+  end
+
   keg_only "conflicts with metis (5.x)"
 
   def install
