@@ -8,8 +8,8 @@ class BrewsciParmetis < Formula
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
     cellar :any
-    sha256 "c0b729a786c24bde8d56e80b0303d0ce67bbcb8c0da5ed45807bde7d29f66922" => :sierra
-    sha256 "c0f0013f82d85cf22e97f82e9c18ad85227993e52d88af7e600946239de4bede" => :x86_64_linux
+    sha256 "ab6deec90cfb0c0c4b432f5e27e0f1c74624cdbf65e7d3bc50c438703588ab45" => :sierra
+    sha256 "11e90f57b7ffa6201007f5aed5eb747acb5234ed261f6e3fc4c0a2e1f9bb4bf5" => :x86_64_linux
   end
 
   keg_only "formulae in brewsci/num are keg only"
