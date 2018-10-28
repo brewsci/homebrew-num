@@ -4,6 +4,13 @@ class BrewsciSuperluMt < Formula
   url "http://crd-legacy.lbl.gov/~xiaoye/SuperLU/superlu_mt_3.0.tar.gz"
   sha256 "e5750982dc83ac62f4da31f24638aa62dbfe3ff00f9b8b786ad2eed5f9cabf56"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    cellar :any
+    sha256 "bc03251ee6067ed8753fc81a8a6faa03c5d669463fd24d7a4b88583d1635187d" => :sierra
+    sha256 "561c5bb9188496dffbfcc1d04c2e81c2849880b202da2f8d965e0e026ffa1428" => :x86_64_linux
+  end
+
   keg_only "formulae in brewsci/num are keg only"
 
   option "with-openmp", "use OpenMP instead of Pthreads interface"
