@@ -5,6 +5,13 @@ class BrewsciCeresSolver < Formula
   sha256 "1df490a197634d3aab0a65687decd362912869c85a61090ff66f073c967a7dcd"
   head "https://ceres-solver.googlesource.com/ceres-solver.git"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    cellar :any
+    sha256 "c6aea5ced7a73fb9b37567089e589a31641be7c80aa0c114f9549411eae18727" => :sierra
+    sha256 "8572ab626907dc180f4d64e247d57762ed2757b628b3510e842edb9c0d821632" => :x86_64_linux
+  end
+
   keg_only "ceres-solver is provided by homebrew/core"
 
   unless OS.mac?
