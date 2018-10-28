@@ -4,6 +4,12 @@ class BrewsciR < Formula
   url "https://cran.rstudio.com/src/base/R-3/R-3.4.1.tar.gz"
   sha256 "02b1135d15ea969a3582caeb95594a05e830a6debcdb5b85ed2d5836a6a3fc78"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    sha256 "d3d90cc3eda0f19da1a8d8484a066060d7146c9c12b75ff14d197cc28bca663b" => :sierra
+    sha256 "3a08b3627f5aafb4b577a25143b88a7c511b1a6eb921cc48c8a76038fc51f653" => :x86_64_linux
+  end
+
   keg_only "r is already provided by homebrew/core"
 
   depends_on "pkg-config" => :build
