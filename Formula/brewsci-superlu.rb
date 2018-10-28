@@ -4,6 +4,13 @@ class BrewsciSuperlu < Formula
   url "http://crd-legacy.lbl.gov/~xiaoye/SuperLU/superlu_5.2.1.tar.gz"
   sha256 "28fb66d6107ee66248d5cf508c79de03d0621852a0ddeba7301801d3d859f463"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    cellar :any
+    sha256 "a25d7311b1930ed21f9b6d5f83724b96990e8031c4e3ff88d3a749c5769163f5" => :sierra
+    sha256 "a505614efc63f4fff178ff77f2aae9f76a205ba648b14f326f511dd13df6a85e" => :x86_64_linux
+  end
+
   keg_only "superlu is already provided by homebrew/core"
 
   option "with-matlab", "Build MEX files for use with Matlab"
