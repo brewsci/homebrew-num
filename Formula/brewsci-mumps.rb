@@ -4,6 +4,13 @@ class BrewsciMumps < Formula
   url "http://mumps.enseeiht.fr/MUMPS_5.1.2.tar.gz"
   sha256 "eb345cda145da9aea01b851d17e54e7eef08e16bfa148100ac1f7f046cd42ae9"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    cellar :any
+    sha256 "6ae5924f6bd48c4efe8fd8f0bb232bbd95071815c83231ca4839c76720da707e" => :sierra
+    sha256 "a587810429fe9f93d5ffa140de346fc2f6d45124ec759bdc5a911afdf125c23f" => :x86_64_linux
+  end
+
   keg_only "formulae in brewsci/num are keg only"
 
   option "without-mpi", "build without MPI"
