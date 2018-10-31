@@ -6,7 +6,7 @@ class BrewsciScalapack < Formula
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
-    cellar :any_skip_relocation
+    cellar :any
     sha256 "4bf235e84122613fc32aaf3ae7faf1926c25d2dea714b221ec49d474240d040c" => :sierra
     sha256 "c751f46d4413e3f98ffdbe296fdd10ba86ec9773f6f5f37f67aa1c7c89e9f875" => :x86_64_linux
   end
