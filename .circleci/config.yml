@@ -2,7 +2,7 @@ version: 2
 jobs:
   build-linux:
     docker:
-      - image: linuxbrew/linuxbrew
+      - image: linuxbrew/brew
     environment:
       CIRCLE_REPOSITORY_URL: https://github.com/brewsci/homebrew-num
       HOMEBREW_DEVELOPER: 1
@@ -22,9 +22,9 @@ jobs:
           git fetch origin
           git config --global user.name LinuxbrewTestBot
           git config --global user.email testbot@linuxbrew.sh
-          chmod 0644 Formula/*.rb
-          mkdir -p /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/$CIRCLE_PROJECT_USERNAME
-          cp -a . /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+          repo=$(brew --repo $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME)
+          mkdir -p $repo
+          cp -a ./ $repo/
       - run:
           no_output_timeout: 30m
           command: |
@@ -38,7 +38,8 @@ jobs:
       - persist_to_workspace:
           root: /tmp
           paths:
-            - bottles
+            - bottles/*.json
+            - bottles/*.tar.gz
       - store_test_results:
           path: /tmp/bottles
   build-macos:
@@ -60,7 +61,6 @@ jobs:
       - run: |
           git remote set-url origin $CIRCLE_REPOSITORY_URL
           git fetch origin
-          git reset --hard origin/master
           git config --global user.name LinuxbrewTestBot
           git config --global user.email testbot@linuxbrew.sh
           repo=$(brew --repo $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME)
@@ -75,12 +75,13 @@ jobs:
       - persist_to_workspace:
           root: /tmp
           paths:
-            - bottles
+            - bottles/*.json
+            - bottles/*.tar.gz
       - store_test_results:
           path: /tmp/bottles
   collect-bottles:
     docker:
-      - image: linuxbrew/linuxbrew
+      - image: linuxbrew/brew
     steps:
       - attach_workspace:
           at: /tmp/workspace
