@@ -4,6 +4,13 @@ class BrewsciSuperluDist < Formula
   url "http://crd-legacy.lbl.gov/~xiaoye/SuperLU/superlu_dist_5.1.0.tar.gz"
   sha256 "30ac554a992441e6041c6fb07772da4fa2fa6b30714279de03573c2cad6e4b60"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    cellar :any
+    sha256 "f26f51421acfb006aba867d32d858de970f91fc99e782c9b97f56a45dce31275" => :sierra
+    sha256 "d02eb6009b8aff2b9f9c29a8947aab21b4a420e669b8ecbf5f146933cf5fae25" => :x86_64_linux
+  end
+
   keg_only "formulae in brewsci/num are keg only"
 
   depends_on "cmake" => :build
