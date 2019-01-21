@@ -3,6 +3,7 @@ class BrewsciScalapack < Formula
   homepage "https://www.netlib.org/scalapack/"
   url "https://www.netlib.org/scalapack/scalapack-2.0.2.tgz"
   sha256 "0c74aeae690fe5ee4db7926f49c5d0bb69ce09eea75beb915e00bba07530395c"
+  revision 1
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
@@ -17,6 +18,9 @@ class BrewsciScalapack < Formula
   depends_on "gcc"
   depends_on "open-mpi"
   depends_on "openblas"
+
+  # https://gitlab.kitware.com/cmake/cmake/issues/18817
+  patch :DATA
 
   def install
     blas = "-L#{Formula["openblas"].opt_lib} -lopenblas"
@@ -46,3 +50,17 @@ class BrewsciScalapack < Formula
     end
   end
 end
+
+__END__
+diff --git a/CMAKE/FortranMangling.cmake b/CMAKE/FortranMangling.cmake
+index e9642ed..e40cac0 100644
+--- a/CMAKE/FortranMangling.cmake
++++ b/CMAKE/FortranMangling.cmake
+@@ -18,6 +18,7 @@ FUNCTION(COMPILE RESULT)
+     EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND}
+          "-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}"
+          "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}"
++         ${PROJECT_SOURCE_DIR}/BLACS/INSTALL/
+         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/BLACS/INSTALL/
+         RESULT_VARIABLE RESVAR OUTPUT_VARIABLE LOG1 ERROR_VARIABLE LOG1
+     )

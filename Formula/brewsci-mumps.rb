@@ -3,6 +3,7 @@ class BrewsciMumps < Formula
   homepage "http://mumps-solver.org"
   url "http://mumps.enseeiht.fr/MUMPS_5.1.2.tar.gz"
   sha256 "eb345cda145da9aea01b851d17e54e7eef08e16bfa148100ac1f7f046cd42ae9"
+  revision 1
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
