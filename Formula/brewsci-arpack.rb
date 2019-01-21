@@ -3,6 +3,7 @@ class BrewsciArpack < Formula
   homepage "https://github.com/opencollab/arpack-ng"
   url "https://github.com/opencollab/arpack-ng/archive/3.6.3.tar.gz"
   sha256 "64f3551e5a2f8497399d82af3076b6a33bf1bc95fc46bbcabe66442db366f453"
+  revision 1
   head "https://github.com/opencollab/arpack-ng.git"
 
   bottle do
