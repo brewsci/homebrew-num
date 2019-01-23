@@ -3,6 +3,7 @@ class BrewsciR < Formula
   homepage "https://www.r-project.org/"
   url "https://cran.rstudio.com/src/base/R-3/R-3.4.1.tar.gz"
   sha256 "02b1135d15ea969a3582caeb95594a05e830a6debcdb5b85ed2d5836a6a3fc78"
+  revision 1
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
