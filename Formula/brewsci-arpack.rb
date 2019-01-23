@@ -8,8 +8,9 @@ class BrewsciArpack < Formula
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
-    sha256 "5e39eb27a3e0f53fcf315f92069a72dd80d42317ef82180453a4a4e1d078ec51" => :sierra
-    sha256 "2c2dc374167e6687dc28c5d16974508c8312e430d5b698c0f963e01efc3756cb" => :x86_64_linux
+    cellar :any
+    sha256 "5dcb61920e5aa67dc0e69aedb46fbda4f6fda2e11297e316c47dea30bafbfeda" => :sierra
+    sha256 "463206ba3efec251843c8b5356e4bc14442fd6bdc8baf655546facd791936fbf" => :x86_64_linux
   end
 
   keg_only "arpack is provided by homebrew/core"
