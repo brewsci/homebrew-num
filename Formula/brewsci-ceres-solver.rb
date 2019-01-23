@@ -9,8 +9,8 @@ class BrewsciCeresSolver < Formula
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
     cellar :any
-    sha256 "c6aea5ced7a73fb9b37567089e589a31641be7c80aa0c114f9549411eae18727" => :sierra
-    sha256 "8572ab626907dc180f4d64e247d57762ed2757b628b3510e842edb9c0d821632" => :x86_64_linux
+    sha256 "7f6789888fff05314ec966431b099047c6c4dea40e035c28068ed99692ea9975" => :sierra
+    sha256 "5110eeaf99004e5d6c522eb916d3ba5bbc326da93ed2254ba19af296ebfff581" => :x86_64_linux
   end
 
   keg_only "ceres-solver is provided by homebrew/core"
