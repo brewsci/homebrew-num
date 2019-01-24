@@ -8,8 +8,8 @@ class BrewsciScalapack < Formula
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
     cellar :any
-    sha256 "4bf235e84122613fc32aaf3ae7faf1926c25d2dea714b221ec49d474240d040c" => :sierra
-    sha256 "c751f46d4413e3f98ffdbe296fdd10ba86ec9773f6f5f37f67aa1c7c89e9f875" => :x86_64_linux
+    sha256 "1c2e20e165af5432b7e3d45fa4d39da741acbf09a0e17a63df33f06c85770795" => :sierra
+    sha256 "ae44dfe1ac56dc5503da3634e292ce6ec5951cac94b5df996f9a542f48944867" => :x86_64_linux
   end
 
   keg_only "scalapack is already provided by homebrew/core"
