@@ -7,8 +7,8 @@ class BrewsciR < Formula
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
-    sha256 "d3d90cc3eda0f19da1a8d8484a066060d7146c9c12b75ff14d197cc28bca663b" => :sierra
-    sha256 "3a08b3627f5aafb4b577a25143b88a7c511b1a6eb921cc48c8a76038fc51f653" => :x86_64_linux
+    sha256 "55a0171f09f3f1a9d4ee3f90609f2f0ecdfa0be8207036c20ff86843d86d66e4" => :sierra
+    sha256 "99203c5f6fcbefb9fce01aec832c2a12102e0effd962331f088b655efb455e1a" => :x86_64_linux
   end
 
   keg_only "r is already provided by homebrew/core"
