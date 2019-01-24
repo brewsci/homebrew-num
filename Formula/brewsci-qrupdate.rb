@@ -8,8 +8,8 @@ class BrewsciQrupdate < Formula
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
     cellar :any
-    sha256 "1af31078e954a20e69baf0e3e312eb7a1bb1f8ab426aeb4a2a1b3cb982254bbc" => :sierra
-    sha256 "078de0cdca0ff1bca81692c263f5e48e837335853e1c2e174c7c82e7fa1733f2" => :x86_64_linux
+    sha256 "b88b5d1c69a4013e00560913bb714669fb6b52d130d763b39a7bb8b6ad927ee2" => :sierra
+    sha256 "4a49aa42b2d1075acda349533c278fbd34c664611beefde08cf72098e4325e6f" => :x86_64_linux
   end
 
   keg_only "qrupdate is provided by homebrew/core"
