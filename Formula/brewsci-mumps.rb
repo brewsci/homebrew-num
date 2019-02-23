@@ -3,7 +3,7 @@ class BrewsciMumps < Formula
   homepage "http://mumps-solver.org"
   url "http://mumps.enseeiht.fr/MUMPS_5.1.2.tar.gz"
   sha256 "eb345cda145da9aea01b851d17e54e7eef08e16bfa148100ac1f7f046cd42ae9"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
@@ -34,93 +34,126 @@ class BrewsciMumps < Formula
   end
 
   def install
-    make_args = ["RANLIB=echo"]
-    if OS.mac?
-      # Building dylibs with mpif90 causes segfaults on 10.8 and 10.10. Use gfortran.
-      shlibs_args = ["LIBEXT=.dylib",
-                     "AR=gfortran -dynamiclib -Wl,-install_name -Wl,#{lib}/$(notdir $@) -undefined dynamic_lookup -o "]
-    else
-      shlibs_args = ["LIBEXT=.so",
-                     "AR=$(FL) -shared -Wl,-soname -Wl,$(notdir $@) -o "]
-    end
-    make_args += ["OPTF=-O", "CDEFS=-DAdd_"]
+    make_args = ["RANLIB=echo", "OPTF=-O", "CDEFS=-DAdd_"]
     orderingsf = "-Dpord"
 
     makefile = build.with?("mpi") ? "Makefile.G95.PAR" : "Makefile.G95.SEQ"
     cp "Make.inc/" + makefile, "Makefile.inc"
 
+    lib_args = []
+
     if build.with? "brewsci-scotch@5"
-      make_args += ["SCOTCHDIR=#{Formula["brewsci-scotch@5"].opt_prefix}",
-                    "ISCOTCH=-I#{Formula["brewsci-scotch@5"].opt_include}"]
+
+      scotch_dir = Formula["brewsci-scotch@5"].opt_prefix
+      make_args += ["SCOTCHDIR=#{scotch_dir}", "ISCOTCH=-I#{Formula["brewsci-scotch@5"].opt_include}"]
 
       if build.with? "mpi"
-        scotch_libs = "LSCOTCH=-L$(SCOTCHDIR)/lib -lptesmumps -lptscotch -lptscotcherr"
+        scotch_libs = "-L$(SCOTCHDIR)/lib -lptesmumps -lptscotch -lptscotcherr"
         scotch_libs += " -lptscotchparmetis" if build.with? "parmetis"
-        make_args << scotch_libs
         orderingsf << " -Dptscotch"
       else
-        scotch_libs = "LSCOTCH=-L$(SCOTCHDIR) -lesmumps -lscotch -lscotcherr"
+        scotch_libs = "-L$(SCOTCHDIR)/lib -lesmumps -lscotch -lscotcherr"
         scotch_libs += " -lscotchmetis" if build.with? "brewsci-metis"
-        make_args << scotch_libs
         orderingsf << " -Dscotch"
       end
+      make_args << "LSCOTCH=#{scotch_libs}"
+      lib_args += scotch_libs.split
+
     elsif build.with? "scotch"
-      make_args += ["SCOTCHDIR=#{Formula["brewsci-scotch"].opt_prefix}",
-                    "ISCOTCH=-I#{Formula["brewsci-scotch"].opt_include}"]
+
+      scotch_dir = Formula["brewsci-scotch"].opt_prefix
+      make_args += ["SCOTCHDIR=#{scotch_dir}", "ISCOTCH=-I#{Formula["brewsci-scotch"].opt_include}"]
 
       if build.with? "mpi"
-        scotch_libs = "LSCOTCH=-L$(SCOTCHDIR)/lib -lptscotch -lptscotcherr -lptscotcherrexit -lscotch"
+        scotch_libs = "-L$(SCOTCHDIR)/lib -lptscotch -lptscotcherr -lptscotcherrexit -lscotch"
         scotch_libs += "-lptscotchparmetis" if build.with? "brewsci-parmetis"
-        make_args << scotch_libs
         orderingsf << " -Dptscotch"
       else
-        scotch_libs = "LSCOTCH=-L$(SCOTCHDIR) -lscotch -lscotcherr -lscotcherrexit"
+        scotch_libs = "-L$(SCOTCHDIR)/lib -lscotch -lscotcherr -lscotcherrexit"
         scotch_libs += "-lscotchmetis" if build.with? "brewsci-metis"
-        make_args << scotch_libs
         orderingsf << " -Dscotch"
       end
+      make_args << "LSCOTCH=#{scotch_libs}"
+      lib_args += scotch_libs.split
+
     end
 
     if build.with? "brewsci-parmetis"
+      metis_libs = "-L#{Formula["brewsci-parmetis"].opt_lib} -lparmetis -L#{Formula["brewsci-metis"].opt_lib} -lmetis"
       make_args += ["LMETISDIR=#{Formula["brewsci-parmetis"].opt_lib}",
                     "IMETIS=#{Formula["brewsci-parmetis"].opt_include}",
-                    "LMETIS=-L#{Formula["brewsci-parmetis"].opt_lib} -lparmetis -L#{Formula["brewsci-metis"].opt_lib} -lmetis"]
+                    "LMETIS=#{metis_libs}"]
       orderingsf << " -Dparmetis"
+      lib_args += metis_libs.split
     elsif build.with? "brewsci-metis"
+      metis_libs = "-L#{Formula["brewsci-metis"].opt_lib} -lmetis"
       make_args += ["LMETISDIR=#{Formula["brewsci-metis"].opt_lib}",
                     "IMETIS=#{Formula["brewsci-metis"].opt_include}",
-                    "LMETIS=-L#{Formula["brewsci-metis"].opt_lib} -lmetis"]
+                    "LMETIS=#{metis_libs}"]
       orderingsf << " -Dmetis"
+      lib_args += metis_libs.split
     end
 
     make_args << "ORDERINGSF=#{orderingsf}"
 
     if build.with? "mpi"
+      scalapack_libs = "-L#{Formula["brewsci-scalapack"].opt_lib} -lscalapack"
       make_args += ["CC=mpicc -fPIC",
                     "FC=mpif90 -fPIC",
                     "FL=mpif90 -fPIC",
-                    "SCALAP=-L#{Formula["brewsci-scalapack"].opt_lib} -lscalapack",
+                    "SCALAP=#{scalapack_libs}",
                     "INCPAR=", # Let MPI compilers fill in the blanks.
                     "LIBPAR=$(SCALAP)"]
+      lib_args += scalapack_libs.split
     else
       make_args += ["CC=#{ENV["CC"]} -fPIC",
                     "FC=gfortran -fPIC -fopenmp",
                     "FL=gfortran -fPIC -fopenmp"]
+      lib_args << "-lgomp"
     end
 
-    make_args << "LIBBLAS=-L#{Formula["openblas"].opt_lib} -lopenblas"
+    blas_lib = "-L#{Formula["openblas"].opt_lib} -lopenblas"
+    make_args << "LIBBLAS=#{blas_lib}"
+    lib_args += blas_lib.split
 
     ENV.deparallelize # Build fails in parallel on Mavericks.
 
-    system "make", "alllib", *(shlibs_args + make_args)
+    system "make", "alllib", *make_args
+
+    # make shared lib
+    so = OS.mac? ? "dylib" : "so"
+    all_load = OS.mac? ? "-all_load" : "--whole-archive"
+    noall_load = OS.mac? ? "-noall_load" : "--no-whole-archive"
+    compiler = OS.mac? ? "gfortran" : "mpif90" # mpif90 causes segfaults on macOS
+    shopts = OS.mac? ? ["-undefined", "dynamic_lookup"] : []
+    install_name = ->(libname) { OS.mac? ? ["-Wl,-install_name", "-Wl,#{lib}/#{libname}.#{so}"] : [] }
+    cd "lib" do
+      libpord_install_name = install_name.call("libpord")
+      system compiler, "-fPIC", "-shared", "-Wl,#{all_load}", "libpord.a", *lib_args, \
+             "-Wl,#{noall_load}", *libpord_install_name, *shopts, "-o", "libpord.#{so}"
+      lib.install "libpord.#{so}"
+      libmumps_common_install_name = install_name.call("libmumps_common")
+      system compiler, "-fPIC", "-shared", "-Wl,#{all_load}", "libmumps_common.a", *lib_args, \
+             "-L#{lib}", "-lpord", "-Wl,#{noall_load}", *libmumps_common_install_name, \
+             *shopts, "-o", "libmumps_common.#{so}"
+      lib.install "libmumps_common.#{so}"
+      %w[libsmumps libdmumps libcmumps libzmumps].each do |l|
+        libinstall_name = install_name.call(l)
+        system compiler, "-fPIC", "-shared", "-Wl,#{all_load}", "#{l}.a", *lib_args, \
+               "-L#{lib}", "-lpord", "-lmumps_common", "-Wl,#{noall_load}", *libinstall_name, \
+               *shopts, "-o", "#{l}.#{so}"
+      end
+    end
+    if build.without? "mpi"
+      cd "lib/libseq" do
+        libmpiseq_install_name = install_name.call("libmpiseq")
+        system compiler, "-fPIC", "-shared", "-Wl,#{all_load}", "libmpiseq.a", *lib_args, \
+               "-Wl,#{noall_load}", *libmpiseq_install_name, *shopts, "-o", "libmpiseq.#{so}"
+      end
+    end
 
     lib.install Dir["lib/*"]
-    lib.install ("libseq/libmpiseq" + (OS.mac? ? ".dylib" : ".so")) if build.without? "mpi"
-
-    # Build static libraries (e.g., for Dolfin)
-    system "make", "alllib", *make_args
-    (libexec/"lib").install Dir["lib/*.a"]
-    (libexec/"lib").install "libseq/libmpiseq.a" if build.without? "mpi"
+    lib.install "libseq/libmpiseq.#{so}" if build.without? "mpi"
 
     inreplace "examples/Makefile" do |s|
       s.change_make_var! "libdir", lib
@@ -161,11 +194,7 @@ class BrewsciMumps < Formula
   end
 
   def caveats
-    s = <<~EOS
-      MUMPS was built with shared libraries. If required,
-      static libraries are available in
-        #{opt_libexec}/lib
-    EOS
+    s = ""
     if build.without? "mpi"
       s += <<~EOS
         You built a sequential MUMPS library.
@@ -181,10 +210,16 @@ class BrewsciMumps < Formula
     cp_r pkgshare/"examples", testpath
     opts = ["-fopenmp"]
     if Tab.for_name("brewsci-mumps").with?("mpi")
-      ENV.prepend_path "LD_LIBRARY_PATH", Formula["brewsci-scalapack"].opt_lib unless OS.mac?
+      mpiopts = ""
+      if OS.linux?
+        mpiopts = "--allow-run-as-root" # for CI purposes only
+        ENV["OMPI_ALLOW_RUN_AS_ROOT"] = "1"
+        ENV["OMPI_ALLOW_RUN_AS_ROOT_CONFIRM"] = "1"
+        ENV.prepend_path "LD_LIBRARY_PATH", Formula["brewsci-scalapack"].opt_lib
+      end
       f90 = "mpif90"
       cc = "mpicc"
-      mpirun = "mpirun -np 1"
+      mpirun = "mpirun -np 1 #{mpiopts}"
       includes = "-I#{opt_include}"
       opts << "-L#{Formula["brewsci-scalapack"].opt_lib}" << "-lscalapack" << "-L#{opt_lib}"
     else
