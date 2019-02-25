@@ -4,6 +4,13 @@ class Tetgen < Formula
   url "http://www.tetgen.org/1.5/src/tetgen1.5.1.tar.gz"
   sha256 "e46a4434a3e7c00044c8f4f167e18b6f4a85be7d22838c8f948ce8cc8c01b850"
 
+  bottle do
+    root_url "https://linuxbrew.bintray.com/bottles-num"
+    cellar :any_skip_relocation
+    sha256 "15806b7803730d5ff1e4f62e3c2622cf5125f62d452217d84b730b6f9c24a716" => :sierra
+    sha256 "c3bd89a77769edf75686ccb15ab35bda3b61bd0e64261ce1c86575ebb565578d" => :x86_64_linux
+  end
+
   depends_on "cmake" => :build
 
   resource "manual" do
