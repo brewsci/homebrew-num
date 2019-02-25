@@ -3,7 +3,7 @@ class BrewsciMumps < Formula
   homepage "http://mumps-solver.org"
   url "http://mumps.enseeiht.fr/MUMPS_5.1.2.tar.gz"
   sha256 "eb345cda145da9aea01b851d17e54e7eef08e16bfa148100ac1f7f046cd42ae9"
-  revision 2
+  revision 3
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
@@ -212,9 +212,11 @@ class BrewsciMumps < Formula
     if Tab.for_name("brewsci-mumps").with?("mpi")
       mpiopts = ""
       if OS.linux?
-        mpiopts = "--allow-run-as-root" # for CI purposes only
-        ENV["OMPI_ALLOW_RUN_AS_ROOT"] = "1"
-        ENV["OMPI_ALLOW_RUN_AS_ROOT_CONFIRM"] = "1"
+        if ENV["CI"]
+          mpiopts = "--allow-run-as-root"
+          ENV["OMPI_ALLOW_RUN_AS_ROOT"] = "1"
+          ENV["OMPI_ALLOW_RUN_AS_ROOT_CONFIRM"] = "1"
+        end
         ENV.prepend_path "LD_LIBRARY_PATH", Formula["brewsci-scalapack"].opt_lib
       end
       f90 = "mpif90"
