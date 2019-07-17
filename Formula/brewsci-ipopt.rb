@@ -5,6 +5,12 @@ class BrewsciIpopt < Formula
   sha256 "aac9bb4d8a257fdfacc54ff3f1cbfdf6e2d61fb0cf395749e3b0c0664d3e7e96"
   head "https://github.com/coin-or/Ipopt.git"
 
+  bottle do
+    cellar :any
+    sha256 "0019198448103a777cf87aee5bee6843756b99ee0f8cbb3d51d2a34c412094ae" => :sierra
+    sha256 "d3ab91384dab553137c4da752b559d4b2942f97402b7936401394df6a5e61bf4" => :x86_64_linux
+  end
+
   depends_on "ampl-mp"
   depends_on "brewsci-metis@4"
   depends_on "gcc"
