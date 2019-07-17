@@ -5,10 +5,9 @@ class BrewsciMumps < Formula
   sha256 "d988fc34dfc8f5eee0533e361052a972aa69cc39ab193e7f987178d24981744a"
 
   bottle do
-    root_url "https://linuxbrew.bintray.com/bottles-num"
     cellar :any
-    sha256 "e04822816c116963c3adfb02d19a680dd36fad2c0b96f74bba9715fb9b232ce0" => :sierra
-    sha256 "84dbabe28b04f4b3c0c9e42b233b4edd8864ba6a86bb89d6874c1b7ff376ac67" => :x86_64_linux
+    sha256 "e54243db160ccd16a50758a7eaf5203d0c92c0f1f9fffcbfd5563e0c06d1bf43" => :sierra
+    sha256 "eb9c01e2d798e16b5548d9b5578a03516678d561b839cb9cbac17fde9ef73af9" => :x86_64_linux
   end
 
   keg_only "formulae in brewsci/num are keg only"
