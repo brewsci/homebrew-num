@@ -5,6 +5,12 @@ class Lancelot < Formula
   version "A-2001-02-27"
   sha256 "a0d25ebdc02b05f62997bdd3dbae1c06b21196cc0fd6b79630d0b157182e060c"
 
+  bottle do
+    cellar :any
+    sha256 "e8390f9f7c79d6ddb774beedd6a15d2dc479e5a9625d43e45d41aab9b1bde3a1" => :sierra
+    sha256 "44e1187f682f046eb0c628168d897accb7d68d7c8673ce37a9a0dcb5c013e172" => :x86_64_linux
+  end
+
   depends_on "gcc"
   depends_on "tcsh" if OS.linux?
 
