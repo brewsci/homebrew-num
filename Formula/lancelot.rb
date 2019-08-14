@@ -1,9 +1,9 @@
 class Lancelot < Formula
   desc "Large-scale nonlinear optimization"
   homepage "http://www.numerical.rl.ac.uk/lancelot/blurb.html"
-  url "http://www.numerical.rl.ac.uk/lancelot/downloads/lancelot.tar.gz"
-  version "A-2001-02-27"
-  sha256 "a0d25ebdc02b05f62997bdd3dbae1c06b21196cc0fd6b79630d0b157182e060c"
+  url "https://github.com/ralna/LANCELOT/archive/v2019.08.09.tar.gz"
+  sha256 "bf658b0a8ae9ae7bef1dff154b65760415116fb8287082e44661a58daf51d51f"
+  head "https://github.com/ralna/LANCELOT.git"
 
   bottle do
     cellar :any
@@ -15,33 +15,25 @@ class Lancelot < Formula
   depends_on "tcsh" if OS.linux?
 
   def install
-    mv "unfold.g77", "unwrap"
-    chmod 0755, "./unwrap"
-    inreplace "unwrap", "/bin/csh", "/usr/bin/env csh"
-    system "./unwrap"
-    inreplace "instll", "/bin/csh", "/usr/bin/env csh"
-    ["instll",
-     "lancelot/compil",
-     "lancelot/sources/optimizers/makefile",
-     "lancelot/sources/sifdec/makefile"].each { |f| inreplace f, "g77", "gfortran" }
-    system "./instll", "single", "large"
-    system "./instll", "double", "large"
-    ["lancelot/lan", "lancelot/sdlan"].each { |f| inreplace f, "/bin/csh", "/usr/bin/env csh" }
-    inreplace "lancelot/lan", "g77", "gfortran"
-    libexec.install "lancelot"
-    %w[lan sdlan sifdec_s sifdec_d].each { |f| bin.install_symlink libexec/"lancelot/#{f}" }
-    share.install "sampleproblems"
-    doc.install "manual.err"
+    system "make"
+    system "make", "PRECISION=single"
+    ["bin/lan", "bin/sdlan"].each { |f| inreplace f, "/bin/csh", "/usr/bin/env csh" }
+    libexec.install "bin", "objects"
+    %w[lan sdlan sifdec_single sifdec_double].each { |f| bin.install_symlink libexec/"bin/#{f}" }
+    doc.install "doc/manual.err"
+    share.install "sampleproblems", "SPEC.SPC"
   end
 
   def caveats
-    "Set the LANDIR environment variable to #{opt_libexec}/lancelot"
+    "Set the LANDIR environment variable to #{opt_libexec}"
   end
 
   test do
-    ENV.append "LANDIR", opt_libexec/"lancelot"
+    ENV.append "LANDIR", opt_libexec
     cp opt_share/"sampleproblems/ALLIN.SIF", testpath
     system "#{bin}/sdlan", "ALLIN"
     system "#{bin}/lan", "-n"
+    system "#{bin}/sdlan", "-s", "ALLIN"
+    system "#{bin}/lan", "-s", "-n"
   end
 end
