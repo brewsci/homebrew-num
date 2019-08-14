@@ -7,8 +7,8 @@ class Lancelot < Formula
 
   bottle do
     cellar :any
-    sha256 "e8390f9f7c79d6ddb774beedd6a15d2dc479e5a9625d43e45d41aab9b1bde3a1" => :sierra
-    sha256 "44e1187f682f046eb0c628168d897accb7d68d7c8673ce37a9a0dcb5c013e172" => :x86_64_linux
+    sha256 "371f5d30bf12c4d8a145349810c622985289b2d3467385461473a20cca1cb69f" => :sierra
+    sha256 "2ae28e21e5172371bb09c3ce8f850fffd4b5aab81cd30740bf48b72e7b0a459b" => :x86_64_linux
   end
 
   depends_on "gcc"
