@@ -1,9 +1,8 @@
 class BrewsciCeresSolver < Formula
   desc "C++ library for large-scale optimization"
   homepage "http://ceres-solver.org/"
-  url "http://ceres-solver.org/ceres-solver-1.13.0.tar.gz"
-  sha256 "1df490a197634d3aab0a65687decd362912869c85a61090ff66f073c967a7dcd"
-  revision 2
+  url "http://ceres-solver.org/ceres-solver-1.14.0.tar.gz"
+  sha256 "4744005fc3b902fed886ea418df70690caa8e2ff6b5a90f3dd88a3d291ef8e8e"
   head "https://ceres-solver.googlesource.com/ceres-solver.git"
 
   bottle do
