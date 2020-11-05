@@ -12,15 +12,17 @@ class BrewsciMumps < Formula
 
   keg_only "formulae in brewsci/num are keg only"
 
-  option "without-mpi", "build without MPI"
-
-  depends_on "brewsci/num/brewsci-scalapack" if build.with? "mpi"
   depends_on "gcc"
-  depends_on "open-mpi" if build.with? "mpi"
   depends_on "openblas"
+  depends_on "open-mpi" => :recommended
 
-  depends_on "brewsci/num/brewsci-metis" => :recommended if build.without? "mpi"
-  depends_on "brewsci/num/brewsci-parmetis" => :recommended if build.with? "mpi"
+  if build.with? "open-mpi"
+    depends_on "brewsci/num/brewsci-scalapack"
+    depends_on "brewsci/num/brewsci-parmetis" => :recommended
+  else
+    depends_on "brewsci/num/brewsci-metis" => :recommended
+  end
+
   depends_on "brewsci/num/brewsci-scotch" => :optional
   depends_on "brewsci/num/brewsci-scotch@5" => :optional
 
@@ -35,7 +37,7 @@ class BrewsciMumps < Formula
     make_args = ["RANLIB=echo", "OPTF=-O", "CDEFS=-DAdd_"]
     orderingsf = "-Dpord"
 
-    makefile = build.with?("mpi") ? "Makefile.G95.PAR" : "Makefile.G95.SEQ"
+    makefile = build.with?("open-mpi") ? "Makefile.G95.PAR" : "Makefile.G95.SEQ"
     cp "Make.inc/" + makefile, "Makefile.inc"
 
     lib_args = []
@@ -45,9 +47,9 @@ class BrewsciMumps < Formula
       scotch_dir = Formula["brewsci-scotch@5"].opt_prefix
       make_args += ["SCOTCHDIR=#{scotch_dir}", "ISCOTCH=-I#{Formula["brewsci-scotch@5"].opt_include}"]
 
-      if build.with? "mpi"
+      if build.with? "open-mpi"
         scotch_libs = "-L$(SCOTCHDIR)/lib -lptesmumps -lptscotch -lptscotcherr"
-        scotch_libs += " -lptscotchparmetis" if build.with? "parmetis"
+        scotch_libs += " -lptscotchparmetis" if build.with? "brewsci-parmetis"
         orderingsf << " -Dptscotch"
       else
         scotch_libs = "-L$(SCOTCHDIR)/lib -lesmumps -lscotch -lscotcherr"
@@ -57,12 +59,12 @@ class BrewsciMumps < Formula
       make_args << "LSCOTCH=#{scotch_libs}"
       lib_args += scotch_libs.split
 
-    elsif build.with? "scotch"
+    elsif build.with? "brewsci-scotch"
 
       scotch_dir = Formula["brewsci-scotch"].opt_prefix
       make_args += ["SCOTCHDIR=#{scotch_dir}", "ISCOTCH=-I#{Formula["brewsci-scotch"].opt_include}"]
 
-      if build.with? "mpi"
+      if build.with? "open-mpi"
         scotch_libs = "-L$(SCOTCHDIR)/lib -lptscotch -lptscotcherr -lptscotcherrexit -lscotch"
         scotch_libs += "-lptscotchparmetis" if build.with? "brewsci-parmetis"
         orderingsf << " -Dptscotch"
@@ -94,7 +96,7 @@ class BrewsciMumps < Formula
 
     make_args << "ORDERINGSF=#{orderingsf}"
 
-    if build.with? "mpi"
+    if build.with? "open-mpi"
       scalapack_libs = "-L#{Formula["brewsci-scalapack"].opt_lib} -lscalapack"
       make_args += ["CC=mpicc -fPIC",
                     "FC=mpif90 -fPIC",
@@ -171,7 +173,7 @@ class BrewsciMumps < Formula
       f.puts(make_args.join(" "))  # Record options passed to make.
     end
 
-    if build.with? "mpi"
+    if build.with? "open-mpi"
       resource("mumps_simple").stage do
         simple_args = ["CC=mpicc", "prefix=#{prefix}", "mumps_prefix=#{prefix}",
                        "scalapack_libdir=#{Formula["brewsci-scalapack"].opt_lib}"]
@@ -252,7 +254,7 @@ class BrewsciMumps < Formula
       system "#{mpirun} ./zsimpletest < input_simpletest_cmplx"
       system cc, "-c", "c_example.c", includes
       system f90, "-o", "c_example", "c_example.o", "-ldmumps", *opts
-      system *(mpirun.split + ["./c_example"] + opts)
+      system(*(mpirun.split + ["./c_example"] + opts))
     end
   end
 end
