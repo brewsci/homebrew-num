@@ -16,7 +16,7 @@ class BrewsciCeresSolver < Formula
   keg_only "ceres-solver is provided by homebrew/core"
 
   unless OS.mac?
-    fails_with :gcc => "5" do
+    fails_with gcc: "5" do
       cause "Dependency glog is compiled with the GCC 4.8 ABI."
     end
   end
