@@ -13,8 +13,8 @@ class BrewsciSuperlu < Formula
 
   keg_only "superlu is already provided by homebrew/core"
 
-  option "with-matlab", "Build MEX files for use with Matlab"
-  option "with-matlab-path=", "Directory that contains MATLAB bin and extern subdirectories"
+  option "with-matlab", "Build MEX files for use with Matlab (Set the environment variable HOMEBREW_MATLAB_PATH to "\
+                        "the directory that contains the MATLAB bin and extern subdirectories)"
 
   option "without-test", "skip build-time tests (not recommended)"
   option "with-openmp", "Enable OpenMP multithreading"
@@ -55,7 +55,7 @@ class BrewsciSuperlu < Formula
     end
 
     if build.with? "matlab"
-      matlab = ARGV.value("with-matlab-path") || HOMEBREW_PREFIX
+      matlab = ENV["HOMEBREW_MATLAB_PATH"] || HOMEBREW_PREFIX
       cd "MATLAB" do
         system "make", "MATLAB=#{matlab}", *all_args
       end
