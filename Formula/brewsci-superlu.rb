@@ -1,8 +1,9 @@
 class BrewsciSuperlu < Formula
   desc "Solve large, sparse nonsymmetric systems of equations"
-  homepage "http://crd-legacy.lbl.gov/~xiaoye/SuperLU/"
-  url "http://crd-legacy.lbl.gov/~xiaoye/SuperLU/superlu_5.2.1.tar.gz"
-  sha256 "28fb66d6107ee66248d5cf508c79de03d0621852a0ddeba7301801d3d859f463"
+  homepage "https://portal.nersc.gov/project/sparse/superlu"
+  url "https://github.com/xiaoyeli/superlu/archive/v5.2.2.tar.gz"
+  sha256 "470334a72ba637578e34057f46948495e601a5988a602604f5576367e606a28c"
+  head "https://github.com/xiaoyeli/superlu"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
@@ -23,6 +24,8 @@ class BrewsciSuperlu < Formula
   depends_on "openblas"
   depends_on "tcsh" => :build unless OS.mac?
 
+  patch :DATA
+
   def install
     ENV.deparallelize
     cp "MAKE_INC/make.mac-x", "./make.inc"
@@ -39,6 +42,7 @@ class BrewsciSuperlu < Formula
     make_args << ("LOADOPTS=" + (build.with?("openmp") ? "-fopenmp" : ""))
 
     all_args = build_args + make_args
+    mkdir "lib"
     system "make", "lib", *all_args
     if build.with? "test"
       system "make", "testing", *all_args
@@ -93,6 +97,7 @@ class BrewsciSuperlu < Formula
     cp prefix/"make.inc", testpath
     make_args = ["SuperLUroot=#{opt_prefix}",
                  "SUPERLULIB=#{opt_lib}/libsuperlu.a",
+                 "INCLUDEDIR=-Wno-implicit-function-declaration -I#{Formula["brewsci-superlu"].opt_include}/superlu",
                  "HEADER=#{opt_include}/superlu"]
     File.readlines(opt_prefix/"make_args.txt").each do |line|
       make_args << line.chomp.delete('\\"')
@@ -133,3 +138,19 @@ class BrewsciSuperlu < Formula
     end
   end
 end
+
+__END__
+diff --git a/SRC/dGetDiagU.c b/SRC/dGetDiagU.c
+index 4d7469a..41f1f27 100644
+--- a/SRC/dGetDiagU.c
++++ b/SRC/dGetDiagU.c
+@@ -29,7 +29,7 @@
+  * data structures.
+  * </pre>
+ */
+-#include <slu_ddefs.h>
++#include "slu_ddefs.h"
+
+ void dGetDiagU(SuperMatrix *L, double *diagU)
+ {
+
