@@ -22,7 +22,7 @@ class BrewsciR < Formula
   depends_on "pcre"
   depends_on "readline"
   depends_on "xz"
-  depends_on :java => :optional
+  depends_on java: :optional
 
   unless OS.mac?
     depends_on "cairo"
@@ -69,10 +69,10 @@ class BrewsciR < Formula
     args << "--with-lapack=-L#{Formula["openblas"].opt_lib} -lopenblas"
     ENV.append "LDFLAGS", "-L#{Formula["openblas"].opt_lib}"
 
-    if build.with? "java"
-      args << "--enable-java"
+    args << if build.with? "java"
+      "--enable-java"
     else
-      args << "--disable-java"
+      "--disable-java"
     end
 
     # Help CRAN packages find gettext and readline
