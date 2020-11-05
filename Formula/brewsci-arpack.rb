@@ -15,22 +15,20 @@ class BrewsciArpack < Formula
 
   keg_only "arpack is provided by homebrew/core"
 
-  option "with-mpi", "build with MPI"
-
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
 
   depends_on "gcc"
-  depends_on "open-mpi" if build.with? "mpi"
   depends_on "openblas"
+  depends_on "open-mpi" => :optional
 
   def install
     args = %W[ --disable-dependency-tracking
                --prefix=#{libexec}
                --with-blas=-L#{Formula["openblas"].opt_lib}\ -lopenblas]
 
-    args << "F77=#{ENV["MPIF77"]}" << "--enable-mpi" if build.with? "mpi"
+    args << "F77=#{ENV["MPIF77"]}" << "--enable-mpi" if build.with? "open-mpi"
 
     system "./bootstrap"
     system "./configure", *args
@@ -42,9 +40,7 @@ class BrewsciArpack < Formula
     pkgshare.install "TESTS/testA.mtx", "TESTS/dnsimp.f",
                      "TESTS/mmio.f", "TESTS/debug.h"
 
-    if build.with? "mpi"
-      (libexec/"bin").install (buildpath/"PARPACK/EXAMPLES/MPI").children
-    end
+    (libexec/"bin").install (buildpath/"PARPACK/EXAMPLES/MPI").children if build.with? "open-mpi"
   end
 
   test do
