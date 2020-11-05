@@ -13,20 +13,17 @@ class BrewsciSuperluMt < Formula
 
   keg_only "formulae in brewsci/num are keg only"
 
-  option "with-openmp", "use OpenMP instead of Pthreads interface"
-
-  depends_on "gcc" if build.with? "openmp"
-
   # Accelerate single precision is buggy and causes certain single precision
   # tests to fail.
   depends_on "openblas"
   depends_on "tcsh" if OS.linux?
+  depends_on "gcc" => :optional
 
   def install
     ENV.deparallelize
     make_args = %W[CC=#{ENV.cc} CFLAGS=#{ENV.cflags} FORTRAN= LOADER=#{ENV.cc}]
 
-    if build.with? "openmp"
+    if build.with? "gcc"
       make_inc = "make.openmp"
       libname = "libsuperlu_mt_OPENMP.a"
       ENV.append_to_cflags "-D__OPENMP"
@@ -56,15 +53,16 @@ class BrewsciSuperluMt < Formula
     end
   end
 
-  def caveats; <<~EOS
-    Default SuperLU_MT build options are recorded in
+  def caveats
+    <<~EOS
+      Default SuperLU_MT build options are recorded in
 
-      #{opt_prefix}/make.inc
+        #{opt_prefix}/make.inc
 
-    Specific options for this build are in
+      Specific options for this build are in
 
-      #{opt_prefix}/make_args.txt
-  EOS
+        #{opt_prefix}/make_args.txt
+    EOS
   end
 
   test do
