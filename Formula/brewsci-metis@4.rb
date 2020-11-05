@@ -33,7 +33,14 @@ class BrewsciMetisAT4 < Formula
     bin.install %w[pmetis kmetis oemetis onmetis partnmesh partdmesh mesh2nodal mesh2dual graphchk]
     lib.install "libmetis.#{so}"
     include.install Dir["Lib/*.h"]
-    pkgshare.install %w[Programs/io.c Test/mtest.c Graphs/4elt.graph Graphs/4elt.graph.part.10 Graphs/metis.mesh Graphs/test.mgraph]
+    pkgshare.install %w[
+      Programs/io.c
+      Test/mtest.c
+      Graphs/4elt.graph
+      Graphs/4elt.graph.part.10
+      Graphs/metis.mesh
+      Graphs/test.mgraph
+    ]
   end
 
   test do
@@ -43,9 +50,7 @@ class BrewsciMetisAT4 < Formula
     cp pkgshare/"4elt.graph.part.10", testpath
     cp pkgshare/"test.mgraph", testpath
     cp pkgshare/"metis.mesh", testpath
-    if OS.linux?
-      ENV["LD_LIBRARY_PATH"] = opt_lib.to_s
-    end
+    ENV["LD_LIBRARY_PATH"] = opt_lib.to_s if OS.linux?
     system ENV.cc, "-I#{include}", "-c", "io.c"
     system ENV.cc, "-I#{include}", "mtest.c", "io.o", "-o", "mtest", "-L#{opt_lib}", "-lmetis", "-lm"
     system "./mtest", "#{opt_pkgshare}/4elt.graph"
