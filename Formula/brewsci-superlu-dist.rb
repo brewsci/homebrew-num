@@ -25,9 +25,18 @@ class BrewsciSuperluDist < Formula
 
     dylib_ext = OS.mac? ? "dylib" : "so"
 
+    parmetis_libs = [
+      "#{Formula["brewsci-parmetis"].opt_lib}/libparmetis.#{dylib_ext}",
+      "#{Formula["brewsci-metis"].opt_lib}/libmetis.#{dylib_ext}",
+    ]
+    parmetis_include_dirs = [
+      Formula["brewsci-parmetis"].opt_include.to_s,
+      Formula["brewsci-metis"].opt_include.to_s,
+    ]
+
     cmake_args = std_cmake_args
-    cmake_args << "-DTPL_PARMETIS_LIBRARIES=#{Formula["brewsci-parmetis"].opt_lib}/libparmetis.#{dylib_ext};#{Formula["brewsci-metis"].opt_lib}/libmetis.#{dylib_ext}"
-    cmake_args << "-DTPL_PARMETIS_INCLUDE_DIRS=#{Formula["brewsci-parmetis"].opt_include};#{Formula["brewsci-metis"].opt_include}"
+    cmake_args << "-DTPL_PARMETIS_LIBRARIES=#{parmetis_libs.join ";"}"
+    cmake_args << "-DTPL_PARMETIS_INCLUDE_DIRS=#{parmetis_include_dirs.join ";"}"
     cmake_args << "-DCMAKE_C_FLAGS=-fPIC -O2"
     cmake_args << "-DBUILD_SHARED_LIBS=ON"
     cmake_args << "-DCMAKE_C_COMPILER=mpicc"
@@ -50,7 +59,11 @@ class BrewsciSuperluDist < Formula
     cp pkgshare/"EXAMPLE/dcreate_matrix.c", testpath
     cp pkgshare/"EXAMPLE/pddrive.c", testpath
     cp pkgshare/"EXAMPLE/g20.rua", testpath
-    args = ["-I#{Formula["brewsci-superlu-dist"].opt_include}", "-L#{Formula["brewsci-superlu-dist"].opt_lib}", "-lsuperlu_dist"]
+    args = [
+      "-I#{Formula["brewsci-superlu-dist"].opt_include}",
+      "-L#{Formula["brewsci-superlu-dist"].opt_lib}",
+      "-lsuperlu_dist",
+    ]
     ENV.prepend_path "LD_LIBRARY_PATH", opt_lib unless OS.mac?
     system "mpicc", "-o", "pddrive", "pddrive.c", "dcreate_matrix.c", *args
     output = shell_output("mpirun -np 4 ./pddrive -r 2 -c 2 g20.rua")
