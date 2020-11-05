@@ -18,13 +18,11 @@ class Starpu < Formula
     depends_on "openblas"
   end
 
-  option "with-openmp", "Enable OpenMP multithreading"
-
-  depends_on "gcc" if build.with? "openmp"
   depends_on "hwloc"
   depends_on "pkg-config"
+  depends_on "gcc" => :optional
 
-  fails_with :clang if build.with? "openmp"
+  fails_with :clang if build.with? "gcc"
 
   def install
     if build.head?
@@ -42,7 +40,7 @@ class Starpu < Formula
               "--without-x",
               "--enable-blas-lib=openblas",
               "--prefix=#{prefix}"]
-      args << "--enable-openmp" if build.with? "openmp"
+      args << "--enable-openmp" if build.with? "gcc"
 
       system "../configure", *args
       system "make"
