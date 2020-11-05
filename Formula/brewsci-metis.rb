@@ -13,18 +13,21 @@ class BrewsciMetis < Formula
 
   keg_only "metis is provided by homebrew/core"
 
-  option "with-openmp", "Enable OpenMP multithreading"
-
   depends_on "cmake" => :build
-  depends_on "gcc" if build.with? "openmp"
+  depends_on "gcc" => :optional
 
-  fails_with :clang if build.with? "openmp"
+  fails_with :clang if build.with? "gcc"
 
   def install
     cmake_args = std_cmake_args
     cmake_args << "-DSHARED=ON" << "-DGKLIB_PATH=../GKlib"
-    if build.with? "openmp"
-      cmake_args << "-DOPENMP=ON" << "-DOpenMP_C_FLAGS=-fopenmp" << "-DOpenMP_CXX_FLAGS=-fopenmp" << "-DOpenMP_CXX_LIB_NAMES=gomp"
+    if build.with? "gcc"
+      cmake_args += [
+        "-DOPENMP=ON",
+        "-DOpenMP_C_FLAGS=-fopenmp",
+        "-DOpenMP_CXX_FLAGS=-fopenmp",
+        "-DOpenMP_CXX_LIB_NAMES=gomp",
+      ]
     end
     cd "build" do
       system "cmake", "..", *cmake_args
