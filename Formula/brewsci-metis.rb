@@ -3,6 +3,7 @@ class BrewsciMetis < Formula
   homepage "http://glaros.dtc.umn.edu/gkhome/views/metis"
   url "http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/metis-5.1.0.tar.gz"
   sha256 "76faebe03f6c963127dbb73c13eab58c9a3faeae48779f049066a21c087c5db2"
+  revision 1
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
