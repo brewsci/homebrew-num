@@ -3,6 +3,7 @@ class BrewsciSuperluMt < Formula
   homepage "https://portal.nersc.gov/project/sparse/superlu"
   url "http://crd-legacy.lbl.gov/~xiaoye/SuperLU/superlu_mt_3.1.tar.gz"
   sha256 "407b544b9a92b2ed536b1e713e80f986824cf3016657a4bfc2f3e7d2a76ecab6"
+  revision 1
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
