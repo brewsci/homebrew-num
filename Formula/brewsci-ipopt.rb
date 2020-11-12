@@ -11,6 +11,7 @@ class BrewsciIpopt < Formula
     sha256 "d3ab91384dab553137c4da752b559d4b2942f97402b7936401394df6a5e61bf4" => :x86_64_linux
   end
 
+  depends_on "pkg-config" => :build
   depends_on "ampl-mp"
   depends_on "brewsci-metis@4"
   depends_on "gcc"
