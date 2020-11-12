@@ -37,11 +37,14 @@ class BrewsciCeresSolver < Formula
                     "-DMETIS_LIBRARY=#{Formula["brewsci-metis"].opt_lib}/libmetis.#{so}"
     system "make"
     system "make", "install"
+    rm_r Dir["examples/**/CMakeFiles/"]
     pkgshare.install "examples", "data"
     doc.install "docs/html" unless build.head?
   end
 
   test do
+    ENV.prepend_path "LD_LIBRARY_PATH", lib unless OS.mac?
+
     cp pkgshare/"examples/helloworld.cc", testpath
     (testpath/"CMakeLists.txt").write <<~EOS
       cmake_minimum_required(VERSION 2.8)
