@@ -1,8 +1,8 @@
 class BrewsciMumps < Formula
   desc "Parallel Sparse Direct Solver"
   homepage "http://mumps-solver.org"
-  url "http://mumps.enseeiht.fr/MUMPS_5.2.1.tar.gz"
-  sha256 "d988fc34dfc8f5eee0533e361052a972aa69cc39ab193e7f987178d24981744a"
+  url "http://mumps.enseeiht.fr/MUMPS_5.3.4.tar.gz"
+  sha256 "28ab16bf4cf9e4ff67f2d987941c1b6b584dd0efa5a3ba7d3bc7f1a75bdc6f7d"
 
   bottle do
     cellar :any
@@ -17,7 +17,7 @@ class BrewsciMumps < Formula
   depends_on "open-mpi" => :recommended
 
   if build.with? "open-mpi"
-    depends_on "brewsci/num/brewsci-scalapack"
+    depends_on "scalapack"
     depends_on "brewsci/num/brewsci-parmetis" => :recommended
   else
     depends_on "brewsci/num/brewsci-metis" => :recommended
@@ -34,7 +34,13 @@ class BrewsciMumps < Formula
   end
 
   def install
-    make_args = ["RANLIB=echo", "OPTF=-O", "CDEFS=-DAdd_"]
+    # MUMPS 5.3.4 does not compile with gfortran10. Allow some errors to go through.
+    # see https://listes.ens-lyon.fr/sympa/arc/mumps-users/2020-10/msg00002.html
+    make_args = ["RANLIB=echo", "CDEFS=-DAdd_"]
+    optf = ["OPTF=-O"]
+    gcc_major_ver = Formula["gcc"].any_installed_version.major
+    optf << "-fallow-argument-mismatch" if gcc_major_ver >= 10
+    make_args << optf.join(" ")
     orderingsf = "-Dpord"
 
     makefile = build.with?("open-mpi") ? "Makefile.G95.PAR" : "Makefile.G95.SEQ"
@@ -97,7 +103,7 @@ class BrewsciMumps < Formula
     make_args << "ORDERINGSF=#{orderingsf}"
 
     if build.with? "open-mpi"
-      scalapack_libs = "-L#{Formula["brewsci-scalapack"].opt_lib} -lscalapack"
+      scalapack_libs = "-L#{Formula["scalapack"].opt_lib} -lscalapack"
       make_args += ["CC=mpicc -fPIC",
                     "FC=mpif90 -fPIC",
                     "FL=mpif90 -fPIC",
@@ -114,6 +120,7 @@ class BrewsciMumps < Formula
 
     blas_lib = "-L#{Formula["openblas"].opt_lib} -lopenblas"
     make_args << "LIBBLAS=#{blas_lib}"
+    make_args << "LAPACK=#{blas_lib}"
     lib_args += blas_lib.split
 
     ENV.deparallelize # Build fails in parallel on Mavericks.
@@ -144,8 +151,8 @@ class BrewsciMumps < Formula
                *shopts, "-o", "#{l}.#{so}"
       end
     end
-    if build.without? "mpi"
-      cd "lib/libseq" do
+    if build.without? "open-mpi"
+      cd "libseq" do
         libmpiseq_install_name = install_name.call("libmpiseq")
         system compiler, "-fPIC", "-shared", "-Wl,#{all_load}", "libmpiseq.a", *lib_args, \
                "-Wl,#{noall_load}", *libmpiseq_install_name, *shopts, "-o", "libmpiseq.#{so}"
@@ -153,7 +160,7 @@ class BrewsciMumps < Formula
     end
 
     lib.install Dir["lib/*"]
-    lib.install "libseq/libmpiseq.#{so}" if build.without? "mpi"
+    lib.install "libseq/libmpiseq.#{so}" if build.without? "open-mpi"
 
     inreplace "examples/Makefile" do |s|
       s.change_make_var! "libdir", lib
@@ -163,7 +170,7 @@ class BrewsciMumps < Formula
     include.install_symlink Dir[libexec/"include/*"]
     # The following .h files may conflict with others related to MPI
     # in /usr/local/include. Do not symlink them.
-    (libexec/"include").install Dir["libseq/*.h"] if build.without? "mpi"
+    (libexec/"include").install Dir["libseq/*.h"] if build.without? "open-mpi"
 
     doc.install Dir["doc/*.pdf"]
     pkgshare.install "examples"
@@ -176,7 +183,7 @@ class BrewsciMumps < Formula
     if build.with? "open-mpi"
       resource("mumps_simple").stage do
         simple_args = ["CC=mpicc", "prefix=#{prefix}", "mumps_prefix=#{prefix}",
-                       "scalapack_libdir=#{Formula["brewsci-scalapack"].opt_lib}"]
+                       "scalapack_libdir=#{Formula["scalapack"].opt_lib}"]
         if build.with? "brewsci-scotch@5"
           simple_args += ["scotch_libdir=#{Formula["brewsci-scotch@5"].opt_lib}",
                           "scotch_libs=-L$(scotch_libdir) -lptesmumps -lptscotch -lptscotcherr"]
@@ -195,7 +202,7 @@ class BrewsciMumps < Formula
 
   def caveats
     s = ""
-    if build.without? "mpi"
+    if build.without? "open-mpi"
       s += <<~EOS
         You built a sequential MUMPS library.
         Please add #{libexec}/include to the include path
@@ -209,7 +216,7 @@ class BrewsciMumps < Formula
     ENV.prepend_path "LD_LIBRARY_PATH", lib unless OS.mac?
     cp_r pkgshare/"examples", testpath
     opts = ["-fopenmp"]
-    if Tab.for_name("brewsci-mumps").with?("mpi")
+    if Tab.for_name("brewsci-mumps").with?("open-mpi")
       mpiopts = ""
       if OS.linux?
         if ENV["CI"]
@@ -217,13 +224,13 @@ class BrewsciMumps < Formula
           ENV["OMPI_ALLOW_RUN_AS_ROOT"] = "1"
           ENV["OMPI_ALLOW_RUN_AS_ROOT_CONFIRM"] = "1"
         end
-        ENV.prepend_path "LD_LIBRARY_PATH", Formula["brewsci-scalapack"].opt_lib
+        ENV.prepend_path "LD_LIBRARY_PATH", Formula["scalapack"].opt_lib
       end
       f90 = "mpif90"
       cc = "mpicc"
       mpirun = "mpirun -np 1 #{mpiopts}"
       includes = "-I#{opt_include}"
-      opts << "-L#{Formula["brewsci-scalapack"].opt_lib}" << "-lscalapack" << "-L#{opt_lib}"
+      opts << "-L#{Formula["scalapack"].opt_lib}" << "-lscalapack" << "-L#{opt_lib}"
     else
       ENV.prepend_path "LD_LIBRARY_PATH", "#{opt_libexec}/lib" unless OS.mac?
       f90 = "gfortran"
