@@ -7,8 +7,8 @@ class BrewsciSuperluDist < Formula
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
-    sha256 "b66f68a56ba8874d061400b61a1159808ed196c63e552a76d4f78e7c69aa42e5" => :sierra
-    sha256 "635b6a1f74c43b53ae2a3d6b074e6e3325e3ebe8d841b7fe5c70b1a07922a3fd" => :x86_64_linux
+    sha256 "19de106830a2558b4f5bcc5888b31ba18b1ddb1f55fe898a2c299595dbcc6a5f" => :catalina
+    sha256 "03113b91f2b248d35cffc252cbfb46dec5261b5c9b4ea85aad25f6395eaaca91" => :x86_64_linux
   end
 
   keg_only "formulae in brewsci/num are keg only"
