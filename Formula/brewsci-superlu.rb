@@ -3,6 +3,7 @@ class BrewsciSuperlu < Formula
   homepage "https://portal.nersc.gov/project/sparse/superlu"
   url "https://github.com/xiaoyeli/superlu/archive/v5.2.2.tar.gz"
   sha256 "470334a72ba637578e34057f46948495e601a5988a602604f5576367e606a28c"
+  revision 1
   head "https://github.com/xiaoyeli/superlu"
 
   bottle do
