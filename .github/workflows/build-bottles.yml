@@ -6,8 +6,6 @@ env:
   HOMEBREW_NO_ANALYTICS: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
   HOMEBREW_NO_INSTALL_CLEANUP: 1
-  BINTRAY_ORG: linuxbrew
-  BINTRAY_ROOT_URL: https://linuxbrew.bintray.com/bottles-num
 
 jobs:
   build-linux-bottles:
@@ -17,117 +15,36 @@ jobs:
     steps:
       - name: Update Homebrew
         run: brew update-reset
-
-      - name: Check out tap
-        uses: actions/checkout@main
-
-      - name: Set up tap
+      - uses: actions/checkout@master
+      - name: Build bottles
         run: |
-          tap_dir="$(brew --repo ${{github.repository}})"
-          mkdir -p "$(dirname $tap_dir)"
-          ln -s "$GITHUB_WORKSPACE" "$tap_dir"
-
-      - run: brew test-bot --only-cleanup-before
-
-      - run: brew test-bot --only-setup
-
-      - name: Run brew test-bot --only-formulae
-        run: |
+          mkdir -p "$(dirname $(brew --repo ${{github.repository}}))"
+          cp -a "$GITHUB_WORKSPACE" "$(brew --repo ${{github.repository}})"
           mkdir ~/bottles
           cd ~/bottles
-          brew test-bot --only-formulae --local --bintray-org=$BINTRAY_ORG --root-url=$BINTRAY_ROOT_URL
-
-      - name: Output brew test-bot --only-formulae failures
-        if: always()
-        run: |
-          cat ~/bottles/steps_output.txt
-          rm ~/bottles/steps_output.txt
-
-      - name: Upload logs
-        if: failure()
-        uses: actions/upload-artifact@main
-        with:
-          name: logs (Linux)
-          path: ~/bottles/logs
-
-      - name: Delete logs and home
-        if: always()
-        run: |
-          rm -rvf ~/bottles/logs
-          rm -rvf ~/bottles/home
-
-      - name: Count bottles
-        id: bottles
-        if: always()
-        run: |
-          cd ~/bottles
-          count=$(ls *.json | wc -l | xargs echo -n)
-          echo "$count bottles"
-          echo "::set-output name=count::$count"
-
+          brew test-bot --skip-recursive-dependents --bintray-org=linuxbrew --root-url=https://linuxbrew.bintray.com/bottles-num --git-name=LinuxbrewTestBot --git-email=testbot@linuxbrew.sh
+          cp -a ~/bottles $RUNNER_TEMP/
       - name: Upload bottles
-        if: always() && steps.bottles.outputs.count > 0
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v1
         with:
           name: bottles
-          path: ~/bottles
-
+          path: ${{runner.temp}}/bottles
   build-macos-bottles:
     runs-on: macos-latest
     steps:
       - name: Update Homebrew
         run: brew update-reset
-
-      - name: Check out tap
-        uses: actions/checkout@main
-
-      - name: Set up tap
+      - uses: actions/checkout@master
+      - name: Build bottles
         run: |
-          tap_dir="$(brew --repo ${{github.repository}})"
-          mkdir -p "$(dirname $tap_dir)"
-          ln -s "$GITHUB_WORKSPACE" "$tap_dir"
-
-      - run: brew test-bot --only-cleanup-before
-
-      - run: brew test-bot --only-setup
-
-      - name: Run brew test-bot --only-formulae
-        run: |
+          mkdir -p "$(dirname $(brew --repo ${{github.repository}}))"
+          cp -a "$GITHUB_WORKSPACE" "$(brew --repo ${{github.repository}})"
           mkdir ~/bottles
           cd ~/bottles
-          brew test-bot --only-formulae --local --bintray-org=$BINTRAY_ORG --root-url=$BINTRAY_ROOT_URL
-
-      - name: Output brew test-bot --only-formulae failures
-        if: always()
-        run: |
-          cat ~/bottles/steps_output.txt
-          rm ~/bottles/steps_output.txt
-
-      - name: Upload logs
-        if: failure()
-        uses: actions/upload-artifact@main
-        with:
-          name: logs (macOS)
-          path: ~/bottles/logs
-
-      - name: Delete logs and home
-        if: always()
-        run: |
-          rm -rvf ~/bottles/logs
-          rm -rvf ~/bottles/home
-
-      - name: Count bottles
-        id: bottles
-        if: always()
-        run: |
-          cd ~/bottles
-          count=$(ls *.json | wc -l | xargs echo -n)
-          echo "$count bottles"
-          echo "::set-output name=count::$count"
-
+          brew test-bot --cleanup --root-url=https://linuxbrew.bintray.com/bottles-num
+          cp -a ~/bottles $RUNNER_TEMP/
       - name: Upload bottles
-        if: always() && steps.bottles.outputs.count > 0
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v1
         with:
           name: bottles
-          path: ~/bottles
+          path: ${{runner.temp}}/bottles
