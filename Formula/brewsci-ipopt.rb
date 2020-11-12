@@ -1,8 +1,8 @@
 class BrewsciIpopt < Formula
   desc "Interior point optimizer"
-  homepage "https://projects.coin-or.org/Ipopt/"
-  url "https://www.coin-or.org/download/source/Ipopt/Ipopt-3.12.13.tgz"
-  sha256 "aac9bb4d8a257fdfacc54ff3f1cbfdf6e2d61fb0cf395749e3b0c0664d3e7e96"
+  homepage "https://github.com/coin-or/Ipopt"
+  url "https://github.com/coin-or/Ipopt/archive/releases/3.13.3.tar.gz"
+  sha256 "86354b36c691e6cd6b8049218519923ab0ce8a6f0a432c2c0de605191f2d4a1c"
   head "https://github.com/coin-or/Ipopt.git"
 
   bottle do
