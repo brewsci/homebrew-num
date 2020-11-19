@@ -1,8 +1,8 @@
 class BrewsciMumps < Formula
   desc "Parallel Sparse Direct Solver"
   homepage "http://mumps-solver.org"
-  url "http://mumps.enseeiht.fr/MUMPS_5.3.4.tar.gz"
-  sha256 "28ab16bf4cf9e4ff67f2d987941c1b6b584dd0efa5a3ba7d3bc7f1a75bdc6f7d"
+  url "http://mumps.enseeiht.fr/MUMPS_5.3.5.tar.gz"
+  sha256 "e5d665fdb7043043f0799ae3dbe3b37e5b200d1ab7a6f7b2a4e463fd89507fa4"
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
