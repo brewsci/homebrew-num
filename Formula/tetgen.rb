@@ -6,9 +6,8 @@ class Tetgen < Formula
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
-    cellar :any_skip_relocation
-    sha256 "15806b7803730d5ff1e4f62e3c2622cf5125f62d452217d84b730b6f9c24a716" => :sierra
-    sha256 "c3bd89a77769edf75686ccb15ab35bda3b61bd0e64261ce1c86575ebb565578d" => :x86_64_linux
+    sha256 cellar: :any_skip_relocation, sierra:       "15806b7803730d5ff1e4f62e3c2622cf5125f62d452217d84b730b6f9c24a716"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "c3bd89a77769edf75686ccb15ab35bda3b61bd0e64261ce1c86575ebb565578d"
   end
 
   depends_on "cmake" => :build

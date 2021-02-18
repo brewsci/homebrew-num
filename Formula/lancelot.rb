@@ -6,9 +6,8 @@ class Lancelot < Formula
   head "https://github.com/ralna/LANCELOT.git"
 
   bottle do
-    cellar :any
-    sha256 "371f5d30bf12c4d8a145349810c622985289b2d3467385461473a20cca1cb69f" => :sierra
-    sha256 "2ae28e21e5172371bb09c3ce8f850fffd4b5aab81cd30740bf48b72e7b0a459b" => :x86_64_linux
+    sha256 cellar: :any, sierra:       "371f5d30bf12c4d8a145349810c622985289b2d3467385461473a20cca1cb69f"
+    sha256 cellar: :any, x86_64_linux: "2ae28e21e5172371bb09c3ce8f850fffd4b5aab81cd30740bf48b72e7b0a459b"
   end
 
   depends_on "gcc"

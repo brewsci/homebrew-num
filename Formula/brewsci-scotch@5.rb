@@ -7,8 +7,8 @@ class BrewsciScotchAT5 < Formula
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
-    sha256 "9136a0ee5df823790d8dfe1f020b9c52ef456e2e0ba2b2b5a83916d1ed147ebe" => :sierra
-    sha256 "17baf1760d0ffc65f139fa5b5ffcfcb723bc3908985a79df98101c6093f1defb" => :x86_64_linux
+    sha256 sierra:       "9136a0ee5df823790d8dfe1f020b9c52ef456e2e0ba2b2b5a83916d1ed147ebe"
+    sha256 x86_64_linux: "17baf1760d0ffc65f139fa5b5ffcfcb723bc3908985a79df98101c6093f1defb"
   end
 
   keg_only "conflicts with scotch (6.x)"
