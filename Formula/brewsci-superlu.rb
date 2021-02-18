@@ -8,9 +8,8 @@ class BrewsciSuperlu < Formula
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
-    cellar :any
-    sha256 "4c49365defe88dd29069c52c02c6b4b991e94a8e332222e7dd1b05b190f79451" => :catalina
-    sha256 "127e3ddaf9fd1566f064c7c47ef57e0bb4095ab0b3002e761a0345506f21c81d" => :x86_64_linux
+    sha256 cellar: :any, catalina:     "4c49365defe88dd29069c52c02c6b4b991e94a8e332222e7dd1b05b190f79451"
+    sha256 cellar: :any, x86_64_linux: "127e3ddaf9fd1566f064c7c47ef57e0bb4095ab0b3002e761a0345506f21c81d"
   end
 
   keg_only "superlu is already provided by homebrew/core"

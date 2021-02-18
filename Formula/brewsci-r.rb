@@ -7,8 +7,8 @@ class BrewsciR < Formula
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
-    sha256 "55a0171f09f3f1a9d4ee3f90609f2f0ecdfa0be8207036c20ff86843d86d66e4" => :sierra
-    sha256 "99203c5f6fcbefb9fce01aec832c2a12102e0effd962331f088b655efb455e1a" => :x86_64_linux
+    sha256 sierra:       "55a0171f09f3f1a9d4ee3f90609f2f0ecdfa0be8207036c20ff86843d86d66e4"
+    sha256 x86_64_linux: "99203c5f6fcbefb9fce01aec832c2a12102e0effd962331f088b655efb455e1a"
   end
 
   keg_only "r is already provided by homebrew/core"
@@ -22,7 +22,7 @@ class BrewsciR < Formula
   depends_on "pcre"
   depends_on "readline"
   depends_on "xz"
-  depends_on java: :optional
+  depends_on "openjdk" => :optional
 
   unless OS.mac?
     depends_on "cairo"
@@ -69,7 +69,7 @@ class BrewsciR < Formula
     args << "--with-lapack=-L#{Formula["openblas"].opt_lib} -lopenblas"
     ENV.append "LDFLAGS", "-L#{Formula["openblas"].opt_lib}"
 
-    args << if build.with? "java"
+    args << if build.with? "openjdk"
       "--enable-java"
     else
       "--disable-java"

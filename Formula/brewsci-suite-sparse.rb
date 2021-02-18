@@ -7,9 +7,8 @@ class BrewsciSuiteSparse < Formula
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
-    cellar :any
-    sha256 "571a5614ebbf39e1985025a4b189fb0e8d322e44658bdcea5381955941c6add5" => :catalina
-    sha256 "e3ca73c5a4d51d88ff85acbd50da0242dd4125dbaa3ac37d3472536f8ef9312d" => :x86_64_linux
+    sha256 cellar: :any, catalina:     "571a5614ebbf39e1985025a4b189fb0e8d322e44658bdcea5381955941c6add5"
+    sha256 cellar: :any, x86_64_linux: "e3ca73c5a4d51d88ff85acbd50da0242dd4125dbaa3ac37d3472536f8ef9312d"
   end
 
   keg_only "suite-sparse is provided by homebrew/core"

@@ -6,9 +6,8 @@ class BrewsciScotch < Formula
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
-    cellar :any
-    sha256 "92eb12d64de82c8a97eadbaaec7f71c1ed734d808d80a953af336e2a64af78bf" => :sierra
-    sha256 "62e78f72d3cf9e5a2c6b0b8373a1d30b27c2acdb98e705b62499cf714e4500a0" => :x86_64_linux
+    sha256 cellar: :any, sierra:       "92eb12d64de82c8a97eadbaaec7f71c1ed734d808d80a953af336e2a64af78bf"
+    sha256 cellar: :any, x86_64_linux: "62e78f72d3cf9e5a2c6b0b8373a1d30b27c2acdb98e705b62499cf714e4500a0"
   end
 
   keg_only "formulae in brewsci/num are keg only"

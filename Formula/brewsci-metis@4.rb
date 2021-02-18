@@ -6,9 +6,8 @@ class BrewsciMetisAT4 < Formula
 
   bottle do
     root_url "https://linuxbrew.bintray.com/bottles-num"
-    cellar :any
-    sha256 "99d2bb2459f17fac6bc108dbba71a96e306dc8d4d9954c972bfa9548e4b3bab7" => :sierra
-    sha256 "a4b07714180328ceec706245be033d657fdef2d7abeb35fbc56a76337ff42192" => :x86_64_linux
+    sha256 cellar: :any, sierra:       "99d2bb2459f17fac6bc108dbba71a96e306dc8d4d9954c972bfa9548e4b3bab7"
+    sha256 cellar: :any, x86_64_linux: "a4b07714180328ceec706245be033d657fdef2d7abeb35fbc56a76337ff42192"
   end
 
   keg_only "conflicts with metis (5.x)"
