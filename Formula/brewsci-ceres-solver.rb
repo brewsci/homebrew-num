@@ -6,7 +6,7 @@ class BrewsciCeresSolver < Formula
   head "https://ceres-solver.googlesource.com/ceres-solver.git"
 
   bottle do
-    root_url "https://linuxbrew.bintray.com/bottles-num"
+    root_url "https://archive.org/download/brewsci/bottles-num"
     sha256 cellar: :any, catalina:     "843571d1820074da8b077dc422637edceba07c690db7bd0e5ef10ad269aaf614"
     sha256 cellar: :any, x86_64_linux: "aea453f8b9b26fc8b9452e53c60974ea97107dae4be11654f177692edaa6adb0"
   end

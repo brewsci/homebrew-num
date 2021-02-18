@@ -5,7 +5,7 @@ class Tetgen < Formula
   sha256 "e46a4434a3e7c00044c8f4f167e18b6f4a85be7d22838c8f948ce8cc8c01b850"
 
   bottle do
-    root_url "https://linuxbrew.bintray.com/bottles-num"
+    root_url "https://archive.org/download/brewsci/bottles-num"
     sha256 cellar: :any_skip_relocation, sierra:       "15806b7803730d5ff1e4f62e3c2622cf5125f62d452217d84b730b6f9c24a716"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "c3bd89a77769edf75686ccb15ab35bda3b61bd0e64261ce1c86575ebb565578d"
   end

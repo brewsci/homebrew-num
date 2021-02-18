@@ -6,7 +6,7 @@ class BrewsciSuperluMt < Formula
   revision 1
 
   bottle do
-    root_url "https://linuxbrew.bintray.com/bottles-num"
+    root_url "https://archive.org/download/brewsci/bottles-num"
     sha256 cellar: :any_skip_relocation, catalina:     "5bb45e9cc3129107c7d0f9956d3b78db5803a0edb9bccaaa81e21f0ebf7259bd"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "a3947533b5480853a25f114c7476610b1f1e06764a0065b324ee95893af02550"
   end
