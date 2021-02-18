@@ -5,7 +5,7 @@ class BrewsciScotch < Formula
   sha256 "f53f4d71a8345ba15e2dd4e102a35fd83915abf50ea73e1bf6efe1bc2b4220c7"
 
   bottle do
-    root_url "https://linuxbrew.bintray.com/bottles-num"
+    root_url "https://archive.org/download/brewsci/bottles-num"
     sha256 cellar: :any, sierra:       "92eb12d64de82c8a97eadbaaec7f71c1ed734d808d80a953af336e2a64af78bf"
     sha256 cellar: :any, x86_64_linux: "62e78f72d3cf9e5a2c6b0b8373a1d30b27c2acdb98e705b62499cf714e4500a0"
   end

@@ -5,7 +5,7 @@ class BrewsciMetisAT4 < Formula
   sha256 "5efa35de80703c1b2c4d0de080fafbcf4e0d363a21149a1ad2f96e0144841a55"
 
   bottle do
-    root_url "https://linuxbrew.bintray.com/bottles-num"
+    root_url "https://archive.org/download/brewsci/bottles-num"
     sha256 cellar: :any, sierra:       "99d2bb2459f17fac6bc108dbba71a96e306dc8d4d9954c972bfa9548e4b3bab7"
     sha256 cellar: :any, x86_64_linux: "a4b07714180328ceec706245be033d657fdef2d7abeb35fbc56a76337ff42192"
   end

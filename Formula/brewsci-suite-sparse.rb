@@ -6,7 +6,7 @@ class BrewsciSuiteSparse < Formula
   revision 2
 
   bottle do
-    root_url "https://linuxbrew.bintray.com/bottles-num"
+    root_url "https://archive.org/download/brewsci/bottles-num"
     sha256 cellar: :any, catalina:     "571a5614ebbf39e1985025a4b189fb0e8d322e44658bdcea5381955941c6add5"
     sha256 cellar: :any, x86_64_linux: "e3ca73c5a4d51d88ff85acbd50da0242dd4125dbaa3ac37d3472536f8ef9312d"
   end

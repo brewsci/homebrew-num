@@ -6,7 +6,7 @@ class BrewsciR < Formula
   revision 1
 
   bottle do
-    root_url "https://linuxbrew.bintray.com/bottles-num"
+    root_url "https://archive.org/download/brewsci/bottles-num"
     sha256 sierra:       "55a0171f09f3f1a9d4ee3f90609f2f0ecdfa0be8207036c20ff86843d86d66e4"
     sha256 x86_64_linux: "99203c5f6fcbefb9fce01aec832c2a12102e0effd962331f088b655efb455e1a"
   end
