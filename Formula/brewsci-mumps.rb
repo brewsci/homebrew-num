@@ -1,8 +1,8 @@
 class BrewsciMumps < Formula
   desc "Parallel Sparse Direct Solver"
   homepage "http://mumps-solver.org"
-  url "http://mumps.enseeiht.fr/MUMPS_5.3.5.tar.gz"
-  sha256 "e5d665fdb7043043f0799ae3dbe3b37e5b200d1ab7a6f7b2a4e463fd89507fa4"
+  url "http://mumps.enseeiht.fr/MUMPS_5.4.1.tar.gz"
+  sha256 "93034a1a9fe0876307136dcde7e98e9086e199de76f1c47da822e7d4de987fa8"
 
   bottle do
     root_url "https://archive.org/download/brewsci/bottles-num"
@@ -125,7 +125,7 @@ class BrewsciMumps < Formula
 
     ENV.deparallelize # Build fails in parallel on Mavericks.
 
-    system "make", "alllib", *make_args
+    system "make", "all", *make_args
 
     # make shared lib
     so = OS.mac? ? "dylib" : "so"
