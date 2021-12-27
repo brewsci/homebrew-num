@@ -69,7 +69,7 @@ class BrewsciSuperluDist < Formula
     return if OS.linux? && ENV["GITHUB_ACTIONS"]
 
     output = shell_output("mpirun -np 4 ./pddrive -r 2 -c 2 g20.rua")
-    accuracy = ((output.lines.grep /Sol  0/)[-1]).to_f
+    accuracy = ((output.lines.grep(/Sol  0/))[-1]).to_f
     assert accuracy < 1.0e-8
   end
 end
