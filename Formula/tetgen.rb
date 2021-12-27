@@ -34,9 +34,9 @@ class Tetgen < Formula
   test do
     cp pkgshare/"example.poly", testpath
     output = shell_output("#{bin}/tetgen -pq1.2V example.poly")
-    assert_match /[Ss]tatistics/, output, "Missing statistics in output"
-    assert_match /[Hh]istogram/, output, "Missing histogram in output"
-    assert_match /seconds/, output, "Missing timings in output"
+    assert_match(/[Ss]tatistics/, output, "Missing statistics in output")
+    assert_match(/[Hh]istogram/, output, "Missing histogram in output")
+    assert_match(/seconds/, output, "Missing timings in output")
     outfile_suffixes = %w[node ele face edge]
     outfile_suffixes.each do |suff|
       assert_predicate testpath/"example.1.#{suff}", :exist?
